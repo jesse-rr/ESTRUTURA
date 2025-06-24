@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sistema de Atendimento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        select, button {
+            margin: 10px 0;
+            padding: 10px;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>Sistema de Atendimento com Prioridades</h1>
+
+<h2>Solicitar nova senha</h2>
+<label for="classe">Classe de atendimento:</label>
+<select id="classe"></select>
+<button onclick="solicitarSenha()">Solicitar Senha</button>
+
+<h2>Chamar próxima senha</h2>
+<button onclick="chamarProximaSenha()">Chamar Senha</button>
+
+<div id="resultado"></div>
+
+<script>
+    // Carrega as classes ao iniciar a página
+    async function carregarClasses() {
+        try {
+            const response = await fetch('/classes');
+            const classes = await response.json();
+            const select = document.getElementById('classe');
+
+            classes.forEach(cl => {
+                const option = document.createElement('option');
+                option.value = cl.classe; // valor submetido (ID)
+                option.textContent = cl.descricao; // descrição exibida ao usuário
+                select.appendChild(option);
+            });
+        } catch (error) {
+            document.getElementById('resultado').textContent = 'Erro ao carregar classes.';
+            console.error(error);
+        }
+    }
+
+    // Solicita uma nova senha da classe selecionada
+    async function solicitarSenha() {
+        const classe = document.getElementById('classe').value;
+        try {
+            const response = await fetch(`/senhas/${classe}`, { method: 'POST' });
+            const senha = await response.text();
+            document.getElementById('resultado').textContent = `Senha gerada: ${senha}`;
+        } catch (error) {
+            document.getElementById('resultado').textContent = 'Erro ao solicitar senha.';
+            console.error(error);
+        }
+    }
+
+    // Chama a próxima senha de atendimento
+    async function chamarProximaSenha() {
+        try {
+            const response = await fetch('/senhas');
+            const senha = await response.text();
+            document.getElementById('resultado').textContent = `Próxima senha: ${senha}`;
+        } catch (error) {
+            document.getElementById('resultado').textContent = 'Erro ao chamar próxima senha.';
+            console.error(error);
+        }
+    }
+
+    // Inicializa a página
+    carregarClasses();
+</script>
+</body>
+</html>
