@@ -1,4 +1,4 @@
-´´´mermaid
+```mermaid
 erDiagram
     JOVEM ||--o{ RESPONSAVEL : possui
     JOVEM ||--o{ CONTATO : possui
@@ -103,3 +103,4 @@ erDiagram
         int requisito_id
         date data_cumprimento
     }
+```
