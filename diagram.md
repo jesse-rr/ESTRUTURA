@@ -1,3 +1,4 @@
+´´´mermaid
 erDiagram
     JOVEM ||--o{ RESPONSAVEL : possui
     JOVEM ||--o{ CONTATO : possui
