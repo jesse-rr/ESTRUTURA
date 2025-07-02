@@ -1,106 +1,122 @@
-```mermaid
 erDiagram
     JOVEM ||--o{ RESPONSAVEL : possui
-    JOVEM ||--o{ CONTATO : possui
-    JOVEM ||--o{ DADOS_SAUDE : possui
+    JOVEM ||--o{ DADO_SAUDE : tem
     JOVEM ||--o{ PARTICIPACAO_ATIVIDADE : participa
     JOVEM ||--o{ PROGRESSAO : realiza
-    JOVEM ||--o{ JOVEM_ESPECIALIDADE : conquista
-    JOVEM ||--o{ JOVEM_INSG_INTERESSE : conquista
-    JOVEM ||--o{ REQUISITO_CUMPRIDO : cumpre
-
-    ESPECIALIDADE ||--o{ REQUISITO : possui
-    INSIGNIA_INTERESSE ||--o{ REQUISITO : possui
-    DISTINTIVO_PROG ||--o{ REQUISITO : possui
-
-    ESPECIALIDADE ||--o{ JOVEM_ESPECIALIDADE : atribuida
-    INSIGNIA_INTERESSE ||--o{ JOVEM_INSG_INTERESSE : atribuida
-
+    JOVEM ||--o{ ESPECIALIDADE_JOVEM : conquista
+    JOVEM ||--o{ INSIGNIA_JOVEM : obtém
+    
+    ESPECIALIDADE ||--o{ REQUISITO_ESPECIALIDADE : contém
+    ESPECIALIDADE ||--o{ ESPECIALIDADE_JOVEM : atribuída
+    ESPECIALIDADE }|--|| AREA_CONHECIMENTO : pertence
+    
+    INSIGNIA ||--o{ REQUISITO_INSIGNIA : contém
+    INSIGNIA ||--o{ INSIGNIA_JOVEM : concedida
+    
+    DISTINTIVO ||--o{ REQUISITO_DISTINTIVO : contém
+    DISTINTIVO ||--o{ PROGRESSAO : alcançado
+    
     JOVEM {
-        int id
+        int id PK
         string nome
-        date nascimento
+        date data_nascimento
         string endereco
-    }
-
-    CONTATO {
-        int id
-        int jovem_id
         string telefone
         string email
+        date data_ingresso
     }
-
+    
     RESPONSAVEL {
-        int id
-        int jovem_id
+        int id PK
+        int jovem_id FK
         string nome
         string telefone
         string email
+        string parentesco
     }
-
-    DADOS_SAUDE {
-        int id
-        int jovem_id
+    
+    DADO_SAUDE {
+        int id PK
+        int jovem_id FK
         string tipo_sanguineo
         string alergias
+        string medicamentos
+        string restricoes
+        string observacoes
     }
-
+    
     PARTICIPACAO_ATIVIDADE {
-        int id
-        int jovem_id
+        int id PK
+        int jovem_id FK
         date data
-        string atividade
+        string nome_atividade
+        string descricao
+        string local
     }
-
+    
     PROGRESSAO {
-        int id
-        int jovem_id
-        date data
-        string nome
+        int id PK
+        int jovem_id FK
+        int distintivo_id FK
+        date data_progressao
     }
-
-    DISTINTIVO_PROG {
-        int id
-        string nome
-    }
-
-    INSIGNIA_INTERESSE {
-        int id
-        string nome
-    }
-
+    
     ESPECIALIDADE {
-        int id
+        int id PK
         string nome
-        string area_conhecimento
+        string descricao
+        int area_conhecimento_id FK
         int total_requisitos
     }
-
-    REQUISITO {
-        int id
-        int especialidade_id
-        int insignia_id
-        int distintivo_id
+    
+    AREA_CONHECIMENTO {
+        int id PK
+        string nome
+    }
+    
+    REQUISITO_ESPECIALIDADE {
+        int id PK
+        int especialidade_id FK
         string descricao
     }
-
-    JOVEM_ESPECIALIDADE {
-        int id
-        int jovem_id
-        int especialidade_id
-        int nivel -- 1, 2 ou 3
+    
+    ESPECIALIDADE_JOVEM {
+        int id PK
+        int jovem_id FK
+        int especialidade_id FK
+        int nivel
+        date data_conquista
     }
-
-    JOVEM_INSG_INTERESSE {
-        int id
-        int jovem_id
-        int insignia_id
+    
+    INSIGNIA {
+        int id PK
+        string nome
+        string descricao
+        int total_requisitos
     }
-
-    REQUISITO_CUMPRIDO {
-        int id
-        int jovem_id
-        int requisito_id
-        date data_cumprimento
+    
+    REQUISITO_INSIGNIA {
+        int id PK
+        int insignia_id FK
+        string descricao
     }
-```
+    
+    INSIGNIA_JOVEM {
+        int id PK
+        int jovem_id FK
+        int insignia_id FK
+        date data_conquista
+    }
+    
+    DISTINTIVO {
+        int id PK
+        string nome
+        string descricao
+        int ordem_progressao
+    }
+    
+    REQUISITO_DISTINTIVO {
+        int id PK
+        int distintivo_id FK
+        string descricao
+    }
