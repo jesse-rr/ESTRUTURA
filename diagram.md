@@ -1,3 +1,4 @@
+```mermaid
 erDiagram
     JOVEM ||--o{ RESPONSAVEL : possui
     JOVEM ||--o{ DADO_SAUDE : tem
@@ -120,3 +121,4 @@ erDiagram
         int distintivo_id FK
         string descricao
     }
+```
